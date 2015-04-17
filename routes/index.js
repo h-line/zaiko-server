@@ -14,10 +14,4 @@ router.get("/lists/", function(req,res,next) {
   });
 });
 
-router.post("/githook", function (req,res,next) {
-  exec("cd /home/lauri/Code/zaiko-server && git pull", {maxBuffer: 500*1024}, function(error, stdout, stderror){
-    return res.send("Out: "+stdout+"\nError: "+stderror);
-  });
-});
-
 module.exports = router;
