@@ -27,4 +27,4 @@ listSchema.statics = {
 
 };
 
-module.exports = mongoose.model('List', schema);
+module.exports = mongoose.model('List', listSchema);
