@@ -16,7 +16,7 @@ router.get("/lists/", function(req,res,next) {
 
 router.route("/list")
   .get(function(req,res,next) {
-	return res.render("new_list");
+	return res.render("add_list");
   })
   .post(function(req,res,next) {
 	var client = req.body.client;
