@@ -14,4 +14,17 @@ router.get("/lists/", function(req,res,next) {
   });
 });
 
+router.route("/list")
+  .get(function(req,res,next) {
+	return res.render("new_list");
+  })
+  .post(function(req,res,next) {
+	var client = req.body.client;
+	List.addList(client, function() {
+	  return res.redirect("/lists");
+	});
+  });
+	
+
+
 module.exports = router;
