@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html ng-app="zaikoApp">
+<head>
+	<title>Zaiko</title>
+	<script src="js/angular.min.js" type="text/javascript"></script>
+	<link rel="stylesheet" type="text/css" href="/css/admin.css">
+	<meta charset="utf-8">
+</head>
+<body ng-controller="adminController">
+	<h2>Lists</h2>
+	<table>
+		<tr>
+			<th>Client</th>
+			<th>Items</th>
+			<th>Show more</th>
+			<th>Remove</th>
+		</tr>
+		<tr ng-repeat="(i, list) in lists">
+			<td>{{list.client}}</td>
+			<td>{{list.items.length}}</td>
+			<td><a href="" ng-click="showItems(i)">Show more</a></td>
+			<td><a href="" ng-click="removeList(list._id, i)">Delete</a></td>
+		</tr>
+		<tr>
+			<td><input type="text" ng-model="newListClient" placeholder="Client"</td>
+			<td></td>
+			<td></td>
+			<td><a href="" ng-click="addList()">Add new</a></td>
+		<tr>
+	</table>
+	<h2>Employees</h2>
+	<table>
+		<tr>
+			<th>Name</th>
+			<th>Remove</th>
+		</tr>
+		<tr ng-repeat="(i, employee) in employees">
+			<td>{{employee.name}}</td>
+			<td><a href="" ng-click="removeEmployee(employee._id, i)">Delete</a></td>
+		</tr>
+		<tr>
+			<td><input type="text" ng-model="newEmployee" placeholder="Name"</td>
+			<td><a href="" ng-click="addEmployee()">Add new</a></td>
+		<tr>
+	</table>
+	<div ng-show="showModal">
+		<div class="mask"></div>
+		<div class="modal">
+			<a href="" ng-click="showModal=false">Cancel</a>
+			<p><strong>Client: </strong>{{lists[currentList].client}}</p>
+			<p>Items</p>
+			<table>
+				<tr>
+					<th>Name</th>
+					<th>Code</th>
+					<th>Amount</th>
+					<th>Weight</th>
+					<th>Package size</th>
+					<th>Price</th>
+					<th>Location</th>
+				</tr>
+				<tr ng-repeat="(i, item) in lists[currentList].items">
+					<td>{{item.name}}</td>
+					<td>{{item.code}}</td>
+					<td>{{item.amount}}</td>
+					<td>{{item.weight}}</td>
+					<td>{{item.packageSize}}</td>
+					<td>{{item.price}}</td>
+					<td>{{item.location}}</td>
+				</tr>
+				<tr>
+					<td><input type="text" ng-model="newItem.name" placeholder="Name"></td>
+					<td><input type="text" ng-model="newItem.code" placeholder="Code"></td>
+					<td><input type="number" ng-model="newItem.amount"</td>
+					<td><input type="number" ng-model="newItem.weight"</td>
+					<td><input type="number" ng-model="newItem.packageSize"</td>
+					<td><input type="number" ng-model="newItem.price"</td>
+					<td><input type="textr" ng-model="newItem.location"</td>
+				</tr>
+			</table>
+			<a href="" ng-click="addItem()">Add new item</a>
+		</div>
+	</div>
+	<script src="js/app.js" type="text/javascript"></script>
+</body>
