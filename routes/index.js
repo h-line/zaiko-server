@@ -10,7 +10,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.get("/lists/", function(req,res,next) {
-  List.find().exec(function(error, lists) {
+  List.find().populate("employee").exec(function(error, lists) {
 	return res.send(lists);
   });
 });
@@ -40,8 +40,39 @@ router.route("/list/:id")
 	});
   });
 
+router.route("/list/:id/employee")
+  .put(function(req,res,next) {
+	var employee = req.body.employee;
+	var list = req.params.id;
+	List.setEmployee(list, employee, function() {
+	  return res.send({"success": "set"});
+	});
+  });
+
+router.route("/list/:id/done")
+  .put(function(req,res,next) {
+	var list = req.params.id;
+	List.markDone(list, function(revenue, weight) {
+	  return res.send({revenue: revenue, weight: weight});
+	});
+  });
+
 router.get("/employees", function(req,res,next) {
   Employee.find().exec(function(error, employees) {
+	return res.send(employees);
+  });
+});
+
+router.get("/highscore/week", function(req,res,next) {
+  var week = 7*24*60*60*1000;
+  Employee.highScore(week, function(employees) {
+	return res.send(employees);
+  });
+});
+
+router.get("/highscore/day", function(req,res,next) {
+  var day = 24*60*60*1000;
+  Employee.highScore(day, function(employees) {
 	return res.send(employees);
   });
 });

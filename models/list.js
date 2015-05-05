@@ -1,5 +1,6 @@
 var mongoose = require("mongoose");
 var model = mongoose.model;
+var Employee = require("./employee");
 
 var listSchema = new mongoose.Schema({
 	client: String,
@@ -18,7 +19,7 @@ var listSchema = new mongoose.Schema({
 	},
 	weight: Number,
 	revenue: Number,
-	done: Boolean
+	done: Boolean,
 });
 
 listSchema.statics = {
@@ -36,6 +37,30 @@ listSchema.statics = {
 		this.update({_id:list}, {$push: {items: item}}, function(error) {
 		  callback();
 		});
+	},
+	setEmployee: function(list, employee, callback) {
+		this.update({_id:list}, {$set: {employee: employee}}, function(error) {
+		  callback();
+		});
+	},
+	markDone: function(listId, callback) {
+		this.findById(listId, function(err, list) {
+			var revenue = 0;
+			var weight = 0;
+			for (var i=0; i<list.items.length;i++) {
+				revenue += (list.items[i].price*list.items[i].amount);
+				weight += (list.items[i].weight*list.items[i].amount);
+			}
+			list.revenue = revenue;
+			list.weight = weight;
+			list.done = true;
+			list.save(function(err) {
+				Employee.addScores(list.employee, revenue, weight, function() {
+					callback(revenue, weight);
+				});
+				
+			});
+		});	
 	}
 
 };

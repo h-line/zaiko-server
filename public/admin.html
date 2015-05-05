@@ -3,32 +3,40 @@
 <head>
 	<title>Zaiko</title>
 	<script src="js/angular.min.js" type="text/javascript"></script>
-	<link rel="stylesheet" type="text/css" href="/css/admin.css">
+	<link href='http://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" type="text/css" href="/css/index.css">
+
 	<meta charset="utf-8">
 </head>
 <body ng-controller="adminController">
-	<h2>Lists</h2>
+	<h1>Lists</h2>
 	<table>
 		<tr>
 			<th>Client</th>
 			<th>Items</th>
+			<th>Employee</th>
+			<th>Done</th>
 			<th>Show more</th>
 			<th>Remove</th>
 		</tr>
 		<tr ng-repeat="(i, list) in lists">
 			<td>{{list.client}}</td>
 			<td>{{list.items.length}}</td>
+			<td>{{list.employee.name}}</td>
+			<td my-done="list" employee="list.employee"></td>
 			<td><a href="" ng-click="showItems(i)">Show more</a></td>
 			<td><a href="" ng-click="removeList(list._id, i)">Delete</a></td>
+
 		</tr>
 		<tr>
-			<td><input type="text" ng-model="newListClient" placeholder="Client"</td>
+			<td><input type="text" ng-model="newListClient" placeholder="Client"></td>
+			<td></td>
 			<td></td>
 			<td></td>
 			<td><a href="" ng-click="addList()">Add new</a></td>
 		<tr>
 	</table>
-	<h2>Employees</h2>
+	<h1>Employees</h2>
 	<table>
 		<tr>
 			<th>Name</th>
@@ -39,16 +47,26 @@
 			<td><a href="" ng-click="removeEmployee(employee._id, i)">Delete</a></td>
 		</tr>
 		<tr>
-			<td><input type="text" ng-model="newEmployee" placeholder="Name"</td>
+			<td><input type="text" ng-model="newEmployee" placeholder="Name"></td>
 			<td><a href="" ng-click="addEmployee()">Add new</a></td>
-		<tr>
+		</tr>
 	</table>
 	<div ng-show="showModal">
 		<div class="mask"></div>
 		<div class="modal">
-			<a href="" ng-click="showModal=false">Cancel</a>
+			<a href="" ng-click="showModal=false">Close</a>
 			<p><strong>Client: </strong>{{lists[currentList].client}}</p>
+			<p>
+				<strong>Employee:</strong>
+				<select ng-options="employee._id as employee.name for employee in employees" ng-model="currentEmployee" ng-hide="lists[currentList].done"></select>
+				<span ng-show="lists[currentList].done">{{lists[currentList].employee.name}}</span>
+			</p>
+			<p><strong>Revenue:</strong>{{lists[currentList].revenue | fixedTwo}} €</p>
+			<p><strong>Weight:</strong>{{lists[currentList].weight | fixedTwo}} kg</p>
+			<button role="button" ng-click="markDone()" ng-hide="lists[currentList].done || !lists[currentList].employee">Mark done</button>
+			
 			<p>Items</p>
+
 			<table>
 				<tr>
 					<th>Name</th>
@@ -68,7 +86,7 @@
 					<td>{{item.price}}</td>
 					<td>{{item.location}}</td>
 				</tr>
-				<tr>
+				<tr ng-hide="lists[currentList].done">
 					<td><input type="text" ng-model="newItem.name" placeholder="Name"></td>
 					<td><input type="text" ng-model="newItem.code" placeholder="Code"></td>
 					<td><input type="number" ng-model="newItem.amount"</td>
@@ -78,7 +96,7 @@
 					<td><input type="textr" ng-model="newItem.location"</td>
 				</tr>
 			</table>
-			<a href="" ng-click="addItem()">Add new item</a>
+			<a href="" ng-click="addItem()" ng-hide="lists[currentList].done">Add new item</a>
 		</div>
 	</div>
 	<script src="js/app.js" type="text/javascript"></script>
