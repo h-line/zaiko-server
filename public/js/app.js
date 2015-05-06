@@ -5,7 +5,9 @@ app.service("ajax", function($http) {
 		getLists: function() {
 			return $http.get("/lists");
 		},
-
+        getAllLists: function() {
+            return $http.get("/lists/all");
+        },
 		addList: function(client) {
 			return $http.post("/list", {client:client});
 		},
@@ -100,7 +102,7 @@ app.directive('myDone', function($document) {
   };
 });
 app.controller("adminController", ["$scope", "ajax", function($scope, ajax) {
-    ajax.getLists()
+    ajax.getAllLists()
     	.success(function(response) {
     		$scope.lists = response;
     	});

@@ -10,6 +10,12 @@ router.get('/', function(req, res, next) {
 });
 
 router.get("/lists/", function(req,res,next) {
+  List.find({done: false}).populate("employee").exec(function(error, lists) {
+	return res.send(lists);
+  });
+});
+
+router.get("/lists/all", function(req,res,next) {
   List.find().populate("employee").exec(function(error, lists) {
 	return res.send(lists);
   });
