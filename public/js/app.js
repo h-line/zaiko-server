@@ -60,14 +60,14 @@ app.controller("mainController", ["$scope", "$interval", "ajax", function($scope
         	});
         ajax.highScoreWeek()
             .success(function(response) {
-                $scope.highScoreWeek = response
+                $scope.highScoreWeek = response;
             });
 
         ajax.highScoreDay()
             .success(function(response) {
-                $scope.highScoreDay = response
+                $scope.highScoreDay = response;
             });
-    };
+    }
     update();
     $interval(update, 5000);
 
@@ -75,9 +75,14 @@ app.controller("mainController", ["$scope", "$interval", "ajax", function($scope
 
 app.filter('fixedTwo', function() {
   return function(input) {
-    return input.toFixed(2);
+  	if(input) {
+  		return input.toFixed(2);
+  	}
+  	return "0.00";
+    
   };
-})
+});
+
 app.directive('myDone', function($document) {
   return {
     scope: {
@@ -88,14 +93,14 @@ app.directive('myDone', function($document) {
         scope.$watch("list", function(list, old) {
             scope.class = "";
             if (list.done && list.employee) {
-            scope.done = "Done"
+            scope.done = "Done";
             }
             else if(!list.done && list.employee) {
-                scope.done = list.employee.name + " is working on it"
+                scope.done = list.employee.name + " is working on it";
                 scope.class = "progress";
             }
             else {
-                scope.done ="Waiting"
+                scope.done ="Waiting";
             }
         }, true);
     }
@@ -105,6 +110,14 @@ app.controller("adminController", ["$scope", "ajax", function($scope, ajax) {
     ajax.getAllLists()
     	.success(function(response) {
     		$scope.lists = response;
+    		for (var i=0;i<$scope.lists.length; i++) {
+    			$scope.lists[i].weight = 0;
+    			$scope.lists[i].revenue = 0;
+    			for (var j=0; j<$scope.lists[i].items.length; j++) {
+    				$scope.lists[i].weight += $scope.lists[i].items[j].amount * $scope.lists[i].items[j].weight;
+    				$scope.lists[i].revenue += $scope.lists[i].items[j].amount * $scope.lists[i].items[j].price;
+    			}
+    		}
     	});
     ajax.getEmployees()
     	.success(function(response) {
@@ -128,6 +141,8 @@ app.controller("adminController", ["$scope", "ajax", function($scope, ajax) {
     $scope.addList = function() {
     	ajax.addList($scope.newListClient)
     		.success(function(response) {
+    			response.weight = 0;
+    			response.revenue = 0;
 	    		$scope.lists.push(response);
 	    		$scope.newListClient = "";
 	    	}); 
@@ -166,6 +181,9 @@ app.controller("adminController", ["$scope", "ajax", function($scope, ajax) {
     	ajax.addItem(listId, $scope.newItem)
     		.success(function(response) {
 	    		$scope.lists[$scope.currentList].items.push($scope.newItem);
+	    		$scope.lists[$scope.currentList].weight += $scope.newItem.amount * $scope.newItem.weight;
+	    		$scope.lists[$scope.currentList].revenue += $scope.newItem.amount * $scope.newItem.price;
+    			
 	    		initItem();
 	    	}); 
     };
