@@ -43,8 +43,7 @@ app.service("ajax", function($http) {
 });
 
 app.controller("mainController", ["$scope", "$interval", "$timeout", "ajax", function($scope, $interval, $timeout, ajax) {
-    $scope.opacity1 = "1";
-    $scope.opacity2 = "0";
+    $scope.doneName = "";
     function update() {
         ajax.getLists()
         	.success(function(response) {
@@ -75,13 +74,29 @@ app.controller("mainController", ["$scope", "$interval", "$timeout", "ajax", fun
 
     $scope.$watch("lists", function(lists, oldLists) {
         if (oldLists && lists.length > oldLists.length) {
-            $scope.opacity = "1";
-            $interval(function() {
+            $scope.opacity="1";
+            
+            $timeout(function() {
                 $scope.opacity = "0";
-            },5000)
+            },5000);
         }
         else if (oldLists && lists.length < oldLists.length) {
-            console.log("Yksi vähemmän");
+            var ids = [];
+            $scope.doneName = "";
+            var i;
+            for (i=0; i<lists.length; i++) {
+            	ids.push(lists[i]._id);
+            }
+            for(i=0; i<oldLists.length; i++) {
+            	if (ids.indexOf(oldLists[i]._id) === -1) {
+            		$scope.doneName = oldLists[i].employee.name;
+            	}
+            }
+            $scope.opacity2="1";
+            
+            $timeout(function() {
+                $scope.opacity2 = "0";
+            },5000);
         }
     }, true);
 
@@ -120,6 +135,9 @@ app.directive('myDone', function($document) {
     }
   };
 });
+
+
+ 
 app.controller("adminController", ["$scope", "ajax", function($scope, ajax) {
     ajax.getAllLists()
     	.success(function(response) {
