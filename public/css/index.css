@@ -5,7 +5,7 @@ body {
 	font-size: 1.2em;
 }
 .panel {
-	margin-top: 5%;
+	margin-top: 7%;
 	width: 50%;
 	float: left;
 	padding-left: 8%;
@@ -13,7 +13,7 @@ body {
 }
 
 .panel2 {
-	margin-top: 5%;
+	margin-top: 7%;
 	width: 25%;
 	float: left;
 	box-sizing: border-box;	
@@ -93,6 +93,8 @@ a:active, a:hover {
 	left: 0;
 	top: 0;
 	transition: opacity 1s ease-in-out;
+	opacity: 0;
+	z-index: 10;
 }
 
 .message {

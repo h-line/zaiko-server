@@ -8,7 +8,6 @@
 	<meta charset="utf-8">
 </head>
 <body ng-controller="mainController">
-	<div class="screen">
 		<div class="panel">
 			<h1>Keräyslistat</h1>
 			<table>
@@ -19,7 +18,7 @@
 					<th>Tilauksen arvo</th>
 					<th>Tila</th>
 				</tr>
-				<tr ng-repeat="list in lists">
+				<tr ng-repeat="list in lists|limitTo: 15">
 					<td>{{list.client}}</td>
 					<td>{{list.items.length}}</td>
 					<td>{{list.weight|fixedTwo}} kg</td>
@@ -38,7 +37,7 @@
 					<th>Työntekijä</th>
 					<th>Paino</th>
 				</tr>
-				<tr ng-repeat="(i, employee) in highScoreDay | limitTo: 5 | orderBy: weight">
+				<tr ng-repeat="(i, employee) in highScoreDay | limitTo: 5 | orderBy: '-weight'">
 					<td>{{i+1}}</td>
 					<td>{{employee.name}} </td>
 					<td>{{employee.weight | fixedTwo}} kg</td>
@@ -52,7 +51,7 @@
 					<th>Työntekijä</th>
 					<th>Arvo</th>
 				</tr>
-				<tr ng-repeat="(i, employee) in highScoreDay | limitTo: 5 | orderBy: revenue">
+				<tr ng-repeat="(i, employee) in highScoreDay | limitTo: 5 | orderBy: '-revenue'">
 					<td>{{i+1}}</td>
 					<td>{{employee.name}}</td>
 					<td>{{employee.revenue | fixedTwo}} €</td>
@@ -68,7 +67,7 @@
 					<th>Työntekijä</th>
 					<th>Paino</th>
 				</tr>
-				<tr ng-repeat="(i, employee) in highScoreWeek | limitTo: 5 | orderBy: weight">
+				<tr ng-repeat="(i, employee) in highScoreWeek | limitTo: 5 | orderBy: '-weight'">
 					<td>{{i+1}}</td>
 					<td>{{employee.name}}</td>
 					<td>{{employee.weight | fixedTwo}} kg</td>
@@ -82,18 +81,23 @@
 					<th>Työntekijä</th>
 					<th>Arvo</th>
 				</tr>
-				<tr ng-repeat="(i, employee) in highScoreWeek | limitTo: 5 | orderBy: revenue">
+				<tr ng-repeat="(i, employee) in highScoreWeek | limitTo: 5 | orderBy: '-revenue'">
 					<td>{{i+1}}</td>
 					<td>{{employee.name}}</td>
 					<td>{{employee.revenue | fixedTwo}} €</td>
 				</tr>
 			</table>
 		</div>
-	</div>
-
-	<div class="screen" ng-style="{opacity: opacity}" style="opacity:0">
+	
+	<div class="screen" ng-style="{opacity: opacity}">
 		<div class="message">
 			<h1>Uusi lista lisätty kerättäväksi!</h1>
+		</div>
+	</div>
+
+	<div class="screen" ng-style="{opacity: opacity2}">
+		<div class="message">
+			<h1>Hyvää työtä {{doneName}}!</h1>
 		</div>
 	</div>
 	
