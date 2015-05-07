@@ -8,88 +8,95 @@
 	<meta charset="utf-8">
 </head>
 <body ng-controller="mainController">
-	<div class="panel">
-		<h1>Picking lists</h1>
-		<table>
-			<tr>
-				<th>Client</th>
-				<th>Items</th>
-				<th>Weight</th>
-				<th>Revenue</th>
-				<th>Status</th>
-			</tr>
-			<tr ng-repeat="list in lists">
-				<td>{{list.client}}</td>
-				<td>{{list.items.length}}</td>
-				<td>{{list.weight}} kg</td>
-				<td>{{list.revenue}} €</td>
-				<td my-done="list" employee="list.employee"></td>
-			</tr>
-		</table>
+	<div class="screen">
+		<div class="panel">
+			<h1>Keräyslistat</h1>
+			<table>
+				<tr>
+					<th>Asiakas</th>
+					<th>Tuotteet</th>
+					<th>Paino</th>
+					<th>Tilauksen arvo</th>
+					<th>Tila</th>
+				</tr>
+				<tr ng-repeat="list in lists">
+					<td>{{list.client}}</td>
+					<td>{{list.items.length}}</td>
+					<td>{{list.weight|fixedTwo}} kg</td>
+					<td>{{list.revenue|fixedTwo}} €</td>
+					<td my-done="list" employee="list.employee"></td>
+				</tr>
+			</table>
+		</div>
+		<div class="panel2">
+
+			<h1>Päivän pistetilanne</h1>
+			<h2>Painon mukaan</h2>
+			<table>
+				<tr>
+					<th></th>
+					<th>Työntekijä</th>
+					<th>Paino</th>
+				</tr>
+				<tr ng-repeat="(i, employee) in highScoreDay | limitTo: 5 | orderBy: weight">
+					<td>{{i+1}}</td>
+					<td>{{employee.name}} </td>
+					<td>{{employee.weight | fixedTwo}} kg</td>
+				</tr>
+			</table>
+
+			<h2>Arvon mukaan</h2>
+			<table>
+				<tr>
+					<th></th>
+					<th>Työntekijä</th>
+					<th>Arvo</th>
+				</tr>
+				<tr ng-repeat="(i, employee) in highScoreDay | limitTo: 5 | orderBy: revenue">
+					<td>{{i+1}}</td>
+					<td>{{employee.name}}</td>
+					<td>{{employee.revenue | fixedTwo}} €</td>
+				</tr>
+			</table>
+		</div>
+		<div class="panel2">
+			<h1>Viikon pistetilanne</h1>
+			<h2>Painon mukaan</h2>
+			<table>
+				<tr>
+					<th></th>
+					<th>Työntekijä</th>
+					<th>Paino</th>
+				</tr>
+				<tr ng-repeat="(i, employee) in highScoreWeek | limitTo: 5 | orderBy: weight">
+					<td>{{i+1}}</td>
+					<td>{{employee.name}}</td>
+					<td>{{employee.weight | fixedTwo}} kg</td>
+				</tr>
+			</table>
+
+			<h2>Arvon mukaan</h2>
+			<table>
+				<tr>
+					<th></th>
+					<th>Työntekijä</th>
+					<th>Arvo</th>
+				</tr>
+				<tr ng-repeat="(i, employee) in highScoreWeek | limitTo: 5 | orderBy: revenue">
+					<td>{{i+1}}</td>
+					<td>{{employee.name}}</td>
+					<td>{{employee.revenue | fixedTwo}} €</td>
+				</tr>
+			</table>
+		</div>
 	</div>
-	<div class="panel2">
 
-		<h1>Daily High Score</h1>
-		<h2>By weight</h2>
-		<table>
-			<tr>
-				<th></th>
-				<th>Employee</th>
-				<th>Weight</th>
-			</tr>
-			<tr ng-repeat="(i, employee) in highScoreDay | limitTo: 5 | orderBy: weight">
-				<td>{{i+1}}</td>
-				<td>{{employee.name}} </td>
-				<td>{{employee.weight | fixedTwo}} kg</td>
-			</tr>
-		</table>
-
-		<h2>By revenue</h2>
-		<table>
-			<tr>
-				<th></th>
-				<th>Employee</th>
-				<th>Revenue</th>
-			</tr>
-			<tr ng-repeat="(i, employee) in highScoreDay | limitTo: 5 | orderBy: revenue">
-				<td>{{i+1}}</td>
-				<td>{{employee.name}}</td>
-				<td>{{employee.revenue | fixedTwo}} €</td>
-			</tr>
-		</table>
+	<div class="screen" ng-style="{opacity: opacity}" style="opacity:0">
+		<div class="message">
+			<h1>Uusi lista lisätty kerättäväksi!</h1>
+		</div>
 	</div>
-	<div class="panel2">
-		<h1>Monthly High Score</h1>
-		<h2>By weight</h2>
-		<table>
-			<tr>
-				<th></th>
-				<th>Employee</th>
-				<th>Weight</th>
-			</tr>
-			<tr ng-repeat="(i, employee) in highScoreWeek | limitTo: 5 | orderBy: weight">
-				<td>{{i+1}}</td>
-				<td>{{employee.name}}</td>
-				<td>{{employee.weight | fixedTwo}} kg</td>
-			</tr>
-		</table>
-
-		<h2>By revenue</h2>
-		<table>
-			<tr>
-				<th></th>
-				<th>Employee</th>
-				<th>Revenue</th>
-			</tr>
-			<tr ng-repeat="(i, employee) in highScoreWeek | limitTo: 5 | orderBy: revenue">
-				<td>{{i+1}}</td>
-				<td>{{employee.name}}</td>
-				<td>{{employee.revenue | fixedTwo}} €</td>
-			</tr>
-		</table>
-	</div>
-
-
+	
 
 	<script src="js/app.js" type="text/javascript"></script>
 </body>

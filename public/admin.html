@@ -9,23 +9,23 @@
 	<meta charset="utf-8">
 </head>
 <body ng-controller="adminController">
-	<h1>Lists</h2>
+	<h1>Keräyslistat</h2>
 	<table>
 		<tr>
-			<th>Client</th>
-			<th>Items</th>
-			<th>Employee</th>
-			<th>Status</th>
-			<th>Show more</th>
-			<th>Remove</th>
+			<th>Asiakas</th>
+			<th>Tuotteet</th>
+			<th>Työntekijä</th>
+			<th>Tila</th>
+			<th>Lisätiedot</th>
+			<th>Poista</th>
 		</tr>
 		<tr ng-repeat="(i, list) in lists">
 			<td>{{list.client}}</td>
 			<td>{{list.items.length}}</td>
 			<td>{{list.employee.name}}</td>
 			<td my-done="list" employee="list.employee"></td>
-			<td><a href="" ng-click="showItems(i)">Show more</a></td>
-			<td><a href="" ng-click="removeList(list._id, i)">Delete</a></td>
+			<td><a href="" ng-click="showItems(i)">Lisätiedot</a></td>
+			<td><a href="" ng-click="removeList(list._id, i)">Poista</a></td>
 
 		</tr>
 		<tr>
@@ -33,49 +33,49 @@
 			<td></td>
 			<td></td>
 			<td></td>
-			<td><a href="" ng-click="addList()">Add new</a></td>
+			<td><a href="" ng-click="addList()">Lisää uusi</a></td>
 		<tr>
 	</table>
-	<h1>Employees</h2>
+	<h1>Työntekijät</h2>
 	<table>
 		<tr>
-			<th>Name</th>
-			<th>Remove</th>
+			<th>Nimi</th>
+			<th>Poista</th>
 		</tr>
 		<tr ng-repeat="(i, employee) in employees">
 			<td>{{employee.name}}</td>
-			<td><a href="" ng-click="removeEmployee(employee._id, i)">Delete</a></td>
+			<td><a href="" ng-click="removeEmployee(employee._id, i)">Poista</a></td>
 		</tr>
 		<tr>
-			<td><input type="text" ng-model="newEmployee" placeholder="Name"></td>
-			<td><a href="" ng-click="addEmployee()">Add new</a></td>
+			<td><input type="text" ng-model="newEmployee" placeholder="Nimi"></td>
+			<td><a href="" ng-click="addEmployee()">Lisää uusi</a></td>
 		</tr>
 	</table>
 	<div ng-show="showModal">
 		<div class="mask"></div>
 		<div class="modal">
-			<a href="" ng-click="showModal=false">Close</a>
-			<p><strong>Client: </strong>{{lists[currentList].client}}</p>
+			<a href="" ng-click="showModal=false">Sulje</a>
+			<p><strong>Asiakas: </strong>{{lists[currentList].client}}</p>
 			<p>
-				<strong>Employee:</strong>
+				<strong>Työntekijä: </strong>
 				<select ng-options="employee._id as employee.name for employee in employees" ng-model="currentEmployee" ng-hide="lists[currentList].done"></select>
 				<span ng-show="lists[currentList].done">{{lists[currentList].employee.name}}</span>
 			</p>
-			<p><strong>Revenue:</strong>{{lists[currentList].revenue | fixedTwo}} €</p>
-			<p><strong>Weight:</strong>{{lists[currentList].weight | fixedTwo}} kg</p>
-			<button role="button" ng-click="markDone()" ng-hide="lists[currentList].done || !lists[currentList].employee">Mark done</button>
+			<p><strong>Tilauksen arvo: </strong>{{lists[currentList].revenue | fixedTwo}} €</p>
+			<p><strong>Tilauksen paino: </strong>{{lists[currentList].weight | fixedTwo}} kg</p>
+			<button role="button" ng-click="markDone()" ng-hide="lists[currentList].done || !lists[currentList].employee">Merkitse kerätyksi</button>
 			
-			<p>Items</p>
+			<p>Tuotteet</p>
 
 			<table>
 				<tr>
-					<th>Name</th>
-					<th>Code</th>
-					<th>Amount</th>
-					<th>Weight</th>
-					<th>Package size</th>
-					<th>Price</th>
-					<th>Location</th>
+					<th>Nimi</th>
+					<th>Tuotekoodi</th>
+					<th>Määrä</th>
+					<th>Yksikköpaino</th>
+					<th>Pakkauskoko</th>
+					<th>Hinta</th>
+					<th>Sijainti</th>
 				</tr>
 				<tr ng-repeat="(i, item) in lists[currentList].items">
 					<td>{{item.name}}</td>
@@ -96,7 +96,7 @@
 					<td><input type="textr" ng-model="newItem.location"</td>
 				</tr>
 			</table>
-			<a href="" ng-click="addItem()" ng-hide="lists[currentList].done">Add new item</a>
+			<a href="" ng-click="addItem()" ng-hide="lists[currentList].done">Lisää uusi tuote</a>
 		</div>
 	</div>
 	<script src="js/app.js" type="text/javascript"></script>

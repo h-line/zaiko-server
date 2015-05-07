@@ -42,7 +42,9 @@ app.service("ajax", function($http) {
 	};
 });
 
-app.controller("mainController", ["$scope", "$interval", "ajax", function($scope, $interval, ajax) {
+app.controller("mainController", ["$scope", "$interval", "$timeout", "ajax", function($scope, $interval, $timeout, ajax) {
+    $scope.opacity1 = "1";
+    $scope.opacity2 = "0";
     function update() {
         ajax.getLists()
         	.success(function(response) {
@@ -54,8 +56,8 @@ app.controller("mainController", ["$scope", "$interval", "ajax", function($scope
         				$scope.lists[i].weight += $scope.lists[i].items[j].amount * $scope.lists[i].items[j].weight;
         				$scope.lists[i].revenue += $scope.lists[i].items[j].amount * $scope.lists[i].items[j].price;
         			}
-        			$scope.lists[i].weight = $scope.lists[i].weight.toFixed(2);
-        			$scope.lists[i].revenue = $scope.lists[i].revenue.toFixed(2);
+        			$scope.lists[i].weight = $scope.lists[i].weight;
+        			$scope.lists[i].revenue = $scope.lists[i].revenue;
         		}
         	});
         ajax.highScoreWeek()
@@ -71,14 +73,26 @@ app.controller("mainController", ["$scope", "$interval", "ajax", function($scope
     update();
     $interval(update, 5000);
 
+    $scope.$watch("lists", function(lists, oldLists) {
+        if (oldLists && lists.length > oldLists.length) {
+            $scope.opacity = "1";
+            $interval(function() {
+                $scope.opacity = "0";
+            },5000)
+        }
+        else if (oldLists && lists.length < oldLists.length) {
+            console.log("Yksi vähemmän");
+        }
+    }, true);
+
 }]);
 
 app.filter('fixedTwo', function() {
   return function(input) {
   	if(input) {
-  		return input.toFixed(2);
+  		return input.toFixed(2).replace(".", ",");
   	}
-  	return "0.00";
+  	return "0,00";
     
   };
 });
@@ -93,14 +107,14 @@ app.directive('myDone', function($document) {
         scope.$watch("list", function(list, old) {
             scope.class = "";
             if (list.done && list.employee) {
-            scope.done = "Done";
+            scope.done = "Kerätty";
             }
             else if(!list.done && list.employee) {
-                scope.done = list.employee.name + " is working on it";
+                scope.done = list.employee.name + " kerää tilausta";
                 scope.class = "progress";
             }
             else {
-                scope.done ="Waiting";
+                scope.done ="Odottaa keräilyä";
             }
         }, true);
     }

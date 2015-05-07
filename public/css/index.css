@@ -85,3 +85,26 @@ a:active, a:hover {
 .progress {
 	color: #6f0;
 }
+
+.screen {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	left: 0;
+	top: 0;
+	transition: opacity 1s ease-in-out;
+}
+
+.message {
+	background-image: url("/img/lasercat.jpg");
+	background-size: 1920px 1080px;
+	text-align: center;
+	height: 100%;
+	margin: 0px;
+	padding: 25px;
+	box-sizing: border-box;
+}
+.message h1 {
+	font-size: 4em;
+	margin-top: 10%;
+}
